@@ -1,0 +1,368 @@
+{
+  psiImplUtilClass="com.alchemy.PsiImplUtil"
+
+  parserClass="com.alchemy.AlchemyParser"
+  parserUtilClass="com.alchemy.AlchemyGeneratedParserUtilBase"
+
+  implements="com.alchemy.AlchemyPsiCompositeElement"
+  extends="com.alchemy.psi.AlchemyPsiCompositeElementImpl"
+
+  psiClassPrefix="Alchemy"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.alchemy"
+  psiImplPackage="com.alchemy.impl"
+
+  elementTypeHolderClass="com.alchemy.AlchemyTokenTypes"
+  elementTypePrefix=""
+  elementTypeClass="com.alchemy.AlchemyElementType"
+  tokenTypeClass="com.alchemy.AlchemyTokenType"
+
+  psiImplUtilClass="com.alchemy.AlchemyPsiImplUtil"
+
+  generateFirstCheck=50
+
+  tokens = [
+// reserved words
+  ASSERT="assert"
+  BREAK="break"
+  CASE="case"
+  CATCH="catch"
+  CLASS="class"
+  CONST="const"
+  CONTINUE="continue"
+  DEFAULT="default"
+  DO="do"
+  ELSE="else"
+  ENUM="enum"
+  EXTENDS="extends"
+  FALSE="false"
+  FINAL="final"
+  FINALLY="finally"
+  FOR="for"
+  IF="if"
+  IN="in"
+  IS="is"
+  NEW="new"
+  NULL="null"
+  RETHROW="rethrow"
+  RETURN="return"
+  SUPER="super"
+  SWITCH="switch"
+  THIS="this"
+  THROW="throw"
+  TRUE="true"
+  TRY="try"
+  VAR="var"
+  VOID="void"
+  WHILE="while"
+  WITH="with"
+
+// BUILT_IN_IDENTIFIER
+  ABSTRACT="abstract"
+  AS="as"
+  BASE="base"
+  COVARIANT="covariant"
+  DEFERRED="deferred"
+  EXPORT="export"
+  EXTENSION="extension"
+  EXTERNAL="external"
+  FACTORY="factory"
+  GET="get"
+  IMPLEMENTS="implements"
+  IMPORT="import"
+  INTERFACE="interface"
+  LIBRARY="library"
+  MIXIN="mixin"
+  OPERATOR="operator"
+  PART="part"
+  SEALED="sealed"
+  SET="set"
+  STATIC="static"
+  TYPEDEF="typedef"
+  WHEN="when"
+
+// other
+  ON="on"
+  OF="of"
+  NATIVE="native"
+  SHOW="show"
+  HIDE="hide"
+  SYNC="sync"
+  ASYNC="async"
+  AWAIT="await"
+  YIELD="yield"
+  LATE="late"
+  REQUIRED="required"
+
+  LBRACE="{"
+  RBRACE="}"
+  LBRACKET="["
+  RBRACKET="]"
+  LPAREN="("
+  RPAREN=")"
+  SEMICOLON=";"
+  MINUS="-"
+  MINUS_EQ="-="
+  MINUS_MINUS="--"
+  PLUS="+"
+  PLUS_PLUS="++"
+  PLUS_EQ="+="
+  DIV="/"
+  DIV_EQ="/="
+  MUL="*"
+  MUL_EQ="*="
+  REM_EQ="%="
+  REM="%"
+  BIN_NOT="~"
+  NOT="!"
+
+  EXPRESSION_BODY_DEF="=>"
+  EQ="="
+  EQ_EQ="=="
+  NEQ="!="
+  DOT="."
+  DOT_DOT=".."
+  QUEST_DOT_DOT="?.."
+  DOT_DOT_DOT="..."
+  DOT_DOT_DOT_QUEST="...?"
+  COMMA=","
+  COLON=":"
+  GT=">"
+  GT_EQ=">="
+  GT_GT=">>"
+  GT_GT_EQ=">>="
+  GT_GT_GT=">>>"
+  GT_GT_GT_EQ=">>>="
+  LT="<"
+  LT_EQ="<="
+  LT_LT="<<"
+  LT_LT_EQ="<<="
+  OR="|"
+  OR_EQ="|="
+  OR_OR="||"
+  OR_OR_EQ="||="
+  QUEST="?"
+  QUEST_DOT="?."
+  QUEST_QUEST="??"
+  QUEST_QUEST_EQ="??="
+  XOR="^"
+  XOR_EQ="^="
+  AND="&"
+  AND_EQ="&="
+  AND_AND="&&"
+  AND_AND_EQ="&&="
+  HASH="#"
+  AT="@"
+  DOUBLE_LITERAL="regexp:[0-9]+\.[0-9]+"
+  NUMBER_FLOAT="regexp:([0-9]+([fm]))|([0-9]+\.[0-9]+([fm]))"
+  NUMBER_INTEGER="regexp:[0-9]+([Ll])?"
+  NUMBER_UNSIGNED="regexp:[0-9]+(UL|ul|u)"
+  ]
+
+  extends(".*Expression")="expression"
+}
+
+alchemyUnit ::= topLevelDefinition*
+
+private topLevelDefinition ::=
+                                 classDefinition
+                               | topLevelMethodDefinition
+//                             | partOfStatement
+//                             | importStatement
+//                             | exportStatement
+//                             | partStatement
+//                             | classDefinition
+//                             | mixinDeclaration
+//                             | enumDefinition
+//                             | extensionTypeDeclaration
+//                             | extensionDeclaration
+//                             | functionTypeAlias
+//                             | getterOrSetterDeclaration
+//                             | functionDeclarationWithBodyOrNative
+//                             | varDeclarationListWithSemicolon
+//                             | incompleteDeclaration // not valid according to spec, but we'd like it to be parsed in order to have completion
+                             {recoverWhile="top_level_recover"}
+private top_level_recover ::= !(<<nonStrictID>>
+                              '(' | '@' | 'abstract' | 'base' | 'class' | 'const' | 'enum' | 'export' | 'extension' |
+                              'external' | 'final' | 'import' | 'interface' | 'sealed' |
+                              'set' | 'static' | 'typedef' | 'var' | 'void')
+
+classDefinition ::=  (classModifiers*) 'class' componentName typeParameters? standardClassDeclarationTail
+
+topLevelMethodDefinition ::= type componentName '(' ')' block {
+    pin=3
+    recoverWhile="class_member_recover"
+}
+private class_member_recover ::= !(<<nonStrictID>> | '(' | '@' | 'abstract' | 'base' | 'class' | 'const' |
+                                 'enum' | 'export' | 'extension' | 'external' | 'factory' | 'final' | 'get' | 'interface' |
+                                 'sealed' | 'set' | 'static' |  'var' | 'void' | '}')
+
+argumentList ::= '(' argumentDeclaration? ')'
+
+argumentDeclaration ::= argumentType? type componentName ('=' expression)?
+
+argumentType ::= 'ref' | 'out' | 'static' | 'stackalloc' | 'readonly'
+
+topLevelMethodModifiers ::= topLevelMethodModifier*
+topLevelMethodModifier ::= HASH componentName
+
+private standardClassDeclarationTail ::= superclass? classBody?
+
+classMembers ::= classMemberDefinition*
+
+block ::= '{' statementList? '}' {
+    pin = 1
+}
+
+statementList ::= statement*
+
+statement ::= block
+            | localVariableDeclaration
+            | statementFollowedBySemiColon
+            | ';'
+
+private statementFollowedBySemiColon ::= (localVariableDeclaration | expression) ';' {pin=1}
+
+localVariableModifier ::= 'ref'
+
+localVariableDeclaration ::= localVariableModifier? ('var' | type ) componentName ('=' ('ref' | 'stackalloc')? expression)? ';'
+
+classMemberDefinition ::= (('public' | 'private')? 'float' componentName ';' )
+                          | stringLiteralExpression
+                          | csLiteralExpr
+
+sizedIntType ::= 'int8' | 'int16' | 'int32' | 'int64'
+sizedUIntType ::= 'uint8' | 'uint16' | 'uint32' | 'uint64'
+namedIntType ::= 'sbyte' | 'short' | 'int' | 'long'
+namedUIntType ::= 'byte' | 'ushort' | 'uint' | 'ulong'
+vectorType ::=  'float2' | 'float3' | 'float4'
+colorType ::= 'color32' | 'color64' | 'color';
+
+simpleType ::= 'bool' | 'char' | 'dynamic' | 'double' | 'float' | sizedIntType | sizedUIntType | namedIntType | namedUIntType | vectorType | colorType;
+primitiveReferenceType ::= 'string' | 'object'
+builtinGenericType ::= ('span' | 'buffer' | 'list' | 'dictionary' | 'queue' | 'hashset') <<gtGt>> type_list '>'
+type_list ::= type (',' type)*
+
+namespaceChain ::= id '::' (type | namespaceChain)+
+
+type ::= 'void' | simpleType | primitiveReferenceType | builtinGenericType | (componentName) // todo -- user generics
+
+partial ::= 'partial'
+
+private classModifiers ::= 'sealed' | 'abstract' | partial
+superclass ::= ':' type {pin=1}
+classBody ::= '{' classMembers '}' {pin=1}
+
+
+componentName ::= << nonStrictID >>
+
+id ::= IDENTIFIER
+metadata ::= '@' 'static' // simpleQualifiedReferenceExpression typeArguments? (<<noSpace>> <<argumentsWrapper>>)?
+
+typeParameters ::= '<' typeParameter? (',' typeParameter)* '>'
+typeParameter ::= metadata* componentName
+
+stringLiteralExpression ::= ( RAW_TRIPLE_QUOTED_STRING | stringTemplate)+
+
+private stringTemplate ::= OPEN_QUOTE (REGULAR_STRING_PART | shortTemplateEntry | longTemplateEntry)* CLOSING_QUOTE {pin=1}
+shortTemplateEntry ::= SHORT_TEMPLATE_ENTRY_START (thisExpression | referenceExpression) {pin=1}
+longTemplateEntry ::= LONG_TEMPLATE_ENTRY_START expression LONG_TEMPLATE_ENTRY_END {pin=1}
+
+thisExpression ::= 'this'
+referenceExpression ::= << nonStrictID >>
+
+csLiteralExpr ::= csNumber | csStringInterpolationLiteral | csStyleInterpolationLiteral | STYLE_VALUE_LITERAL | STRING_LITERAL | CHAR_LITERAL | csBool | 'default' | 'null'
+private csNumber ::= NUMBER_FLOAT | DOUBLE_LITERAL | csIntegerLiteral
+private csIntegerLiteral ::= NUMBER_INTEGER | NUMBER_UNSIGNED
+private csBool ::= 'true' | 'false'
+
+binaryOperator ::= multiplicativeOperator |
+                   additiveOperator |
+                   shiftOperator|
+                   relationalOperator|
+                   '==' |
+                   bitwiseOperator
+
+multiplicativeOperator ::= '*' | '/' | '%'
+additiveOperator ::= '+' | '-'
+shiftOperator ::= '<<' | <<gtGtGt>> | <<gtGt>>
+relationalOperator ::= <<gtEq>> | '>' | '<=' | '<'
+bitwiseOperator ::= '&' | '^' | '|'
+
+assignmentOperator ::= '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | <<gtGtEq>> | <<gtGtGtEq>> | '&=' | '&&=' | '^=' | '|=' | '||=' | '??='
+equalityOperator ::= '==' | '!='
+prefixOperator ::= '-' | '+' | '--' | '++' | '!' | '~'
+
+expression ::= assignExpressionWrapper {recoverWhile="expression_recover"}
+private expression_recover ::= !(<<nonStrictID>> |
+                               <<gtEq>> | <<gtGt>> | <<gtGtEq>> | <<gtGtGt>> | <<gtGtGtEq>> |
+                               '!' | '!=' | '#' | '%' | '%=' | '&&' | '&&=' | '&' | '&=' | '(' | ')' | '*' | '*=' | '+' | '++' | '+=' |
+                               ',' | '-' | '--' | '-=' | '.' | '..' | '...' | '...?' | '/' | '/=' | ':' | ';' | '<' | '<<' | '<<=' | '<=' |
+                               '=' | '==' | '=>' | '>' | '?' | '?.' | '?..' | '??' | '??=' | '@' | '[' | ']' | '^' | '^=' | 'abstract' |
+                               'as' | 'assert' | 'base' | 'break' | 'case' | 'catch' | 'class' | 'const' | 'continue' |
+                               'default' | 'do' | 'else' | 'enum' | 'export' |  'for' | 'if' | 'import' | 'interface' | 'is' |
+                               'new' | 'on' | 'return' | 'sealed' | 'get' | 'set'
+                               'static' | 'switch' | 'this' | 'throw' | 'try' | 'var' | 'void' | 'when' | 'while' |
+                               '{' | '|' | '|=' | '||' | '||=' | '}' | '~' |  CLOSING_QUOTE | FALSE | HEX_NUMBER |
+                               LONG_TEMPLATE_ENTRY_END | LONG_TEMPLATE_ENTRY_START | NULL | NUMBER | OPEN_QUOTE | RAW_SINGLE_QUOTED_STRING |
+                               RAW_TRIPLE_QUOTED_STRING | REGULAR_STRING_PART | SHORT_TEMPLATE_ENTRY_START | TRUE)
+
+private assignExpressionWrapper ::= ternaryExpressionWrapper assignExpression*
+left assignExpression ::= assignmentOperator ternaryExpressionWrapper {pin=1} // todo right associate
+
+private ternaryExpressionWrapper ::= ifNullExpressionWrapper ternaryExpression?
+left ternaryExpression ::= '?' expression ':' ternaryExpressionWrapper {pin=1}
+
+private ifNullExpressionWrapper ::= logicOrExpressionWrapper ifNullExpression*
+left ifNullExpression ::= '??' logicOrExpressionWrapper
+
+private logicOrExpressionWrapper ::= logicAndExpressionWrapper logicOrExpression*
+left logicOrExpression ::= '||' logicAndExpressionWrapper
+
+private logicAndExpressionWrapper ::= compareExpressionWrapper logicAndExpression*
+left logicAndExpression ::= '&&' compareExpressionWrapper
+
+private compareExpressionWrapper ::= bitwiseExpressionWrapper compareExpression*
+left compareExpression ::= (relationalOperator | equalityOperator) bitwiseExpressionWrapper
+
+private bitwiseExpressionWrapper ::= shiftExpressionWrapper bitwiseExpression*
+left bitwiseExpression ::= bitwiseOperator shiftExpressionWrapper
+
+private shiftExpressionWrapper ::= additiveExpressionWrapper shiftExpression*
+left shiftExpression ::= shiftOperator additiveExpressionWrapper
+
+private additiveExpressionWrapper ::= multiplicativeExpressionWrapper additiveExpression*
+left additiveExpression ::= additiveOperator multiplicativeExpressionWrapper
+
+private multiplicativeExpressionWrapper ::= prefixExpression multiplicativeExpression*
+left multiplicativeExpression ::= multiplicativeOperator prefixExpression
+
+prefixExpression ::= (prefixOperator prefixExpression) | suffixExpressionWrapper
+private suffixExpressionWrapper ::= valueExpression suffixExpression*
+left suffixExpression ::= ('--' | '++')
+
+valueExpression ::= primary (isExpression | asExpression)?// callOrArrayAccessOrQualifiedRefExpression (isExpression | asExpression)? // cascadeReferenceExpression*
+left isExpression ::= 'is' '!'? type
+left asExpression ::= 'as' type
+
+//cascadeReferenceExpression ::= ('?..' | '..') << cascadeStopper >> (arrayAccess | refOrThisOrSuperOrParenExpression callOrArrayAccessOrQualifiedRefExpression) << varInitWrapper >>
+
+literalExpression ::=  csNumber | csStringInterpolationLiteral | csStyleInterpolationLiteral | STYLE_VALUE_LITERAL | STRING_LITERAL | CHAR_LITERAL | csBool | 'default' | 'null'
+private csIntegerLiteral ::= NUMBER_INTEGER | NUMBER_UNSIGNED
+private csNumber ::= NUMBER_FLOAT | DOUBLE_LITERAL | csIntegerLiteral
+private csBool ::= 'true' | 'false'
+
+private primary ::=  csNumber|
+                     functionExpression |
+                     literalExpression |
+                     newExpression |
+                     refOrThisOrSuperOrParenExpression |
+                     throwExpression |
+                     switchExpressionWrapper
+
+functionExpression ::= typeParameters? formalParameterList functionExpressionBody
+
+variableDecl ::= ('var' | type) id varExpr? ';'
+varExpr ::= '=' expression {
+    pin = 1
+}
