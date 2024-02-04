@@ -1,8 +1,10 @@
 package com.alchemy;
 
+import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+
 
 public class AlchemyTokenType extends IElementType {
 

@@ -22,4 +22,8 @@ public class AlchemyFile extends PsiFileBase {
         return "Alchemy File";
     }
 
+    public static String getDefaultExtension() {
+        return "pot";
+    }
+
 }

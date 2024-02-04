@@ -12,7 +12,7 @@ import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
-final class AlchemyParserDefinition implements ParserDefinition {
+public final class AlchemyParserDefinition implements ParserDefinition {
 
     public static final IFileElementType FILE = new IFileElementType(AlchemyLanguage.INSTANCE);
 
@@ -55,7 +55,7 @@ final class AlchemyParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public PsiElement createElement(ASTNode node) {
-        return AlchemyTokenTypes.Factory.createElement(node);
+        return AlchemyElementFactory.createElement(node);
     }
 
 }

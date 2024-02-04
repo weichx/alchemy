@@ -1,11 +1,11 @@
 {
   psiImplUtilClass="com.alchemy.PsiImplUtil"
 
-  parserClass="com.alchemy.AlchemyParser"
+  parserClass="com.alchemy.AlchemyParserOld"
   parserUtilClass="com.alchemy.AlchemyGeneratedParserUtilBase"
 
-  implements="com.alchemy.AlchemyPsiCompositeElement"
-  extends="com.alchemy.psi.AlchemyPsiCompositeElementImpl"
+  implements="com.alchemy.AlchemyPsiElement"
+  extends="com.alchemy.psi.AlchemyPsiElement"
 
   psiClassPrefix="Alchemy"
   psiImplClassSuffix="Impl"

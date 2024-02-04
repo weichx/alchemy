@@ -1,27 +1,11 @@
 package com.alchemy;
 
-import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import groovyjarjarantlr.Token;
+
+import static com.alchemy.AlchemyTokenTypes.*;
 
 public interface AlchemyTokenSets {
-
-    IElementType WHITE_SPACE = TokenType.WHITE_SPACE;
-    IElementType BAD_CHARACTER = TokenType.BAD_CHARACTER;
-
-    // DartLexer returns multiline comments as a single MULTI_LINE_COMMENT or MULTI_LINE_DOC_COMMENT
-    // DartDocLexer splits MULTI_LINE_DOC_COMMENT in tokens
-
-    // can't appear in PSI because merged into MULTI_LINE_COMMENT
-    IElementType MULTI_LINE_COMMENT_START = new AlchemyElementType("MULTI_LINE_COMMENT_START");
-
-    IElementType MULTI_LINE_DOC_COMMENT_START = new AlchemyElementType("MULTI_LINE_DOC_COMMENT_START");
-    IElementType MULTI_LINE_COMMENT_BODY = new AlchemyElementType("MULTI_LINE_COMMENT_BODY");
-    IElementType DOC_COMMENT_LEADING_ASTERISK = new AlchemyElementType("DOC_COMMENT_LEADING_ASTERISK");
-    IElementType MULTI_LINE_COMMENT_END = new AlchemyElementType("MULTI_LINE_COMMENT_END");
-
-    IElementType SINGLE_LINE_COMMENT = new AlchemyElementType("SINGLE_LINE_COMMENT");
-    IElementType MULTI_LINE_COMMENT = new AlchemyElementType("MULTI_LINE_COMMENT");
 
     TokenSet STRINGS = TokenSet.create(); //RAW_SINGLE_QUOTED_STRING, RAW_TRIPLE_QUOTED_STRING, OPEN_QUOTE, CLOSING_QUOTE, REGULAR_STRING_PART);
 
@@ -117,38 +101,79 @@ public interface AlchemyTokenSets {
 //            MULTIPLICATIVE_EXPRESSION
 //    );
 //
-//    TokenSet BINARY_OPERATORS = TokenSet.create(
-//            // '??
-//            QUEST_QUEST,
-//            // '&&' '||'
-//            AND_AND, OR_OR,
-//            // '==' '!='
-//            EQ_EQ, NEQ,
-//            // '<' '<=' '>' '>='
-//            LT, LT_EQ, GT, GT_EQ,
-//            // '&' '|' '^'
-//            AND, OR, XOR,
-//            // '<<' '>>' '>>>'
-//            LT_LT, GT_GT, GT_GT_GT,
-//            // '+' '-'
-//            PLUS, MINUS,
-//            // '*' '/' '%' '~/'
-//            MUL, DIV, REM, INT_DIV
-//    );
-//
-//    TokenSet LOGIC_OPERATORS = TokenSet.create(
-//            OR_OR, AND_AND,
-//            // Strictly speaking, this isn't a logical operator, but should be formatted the same.
-//            QUEST_QUEST
-//    );
-//
-//    TokenSet UNARY_OPERATORS = TokenSet.create(
-//            // '-' '!' '~' '++' '--'
-//            MINUS, NOT, BIN_NOT, PLUS_PLUS, MINUS_MINUS
-//    );
-//
+
+    TokenSet BUILT_IN_PRIMITIVE_TYPES = TokenSet.create(
+            TYPE_INT8,
+            TYPE_INT16,
+            TYPE_INT32,
+            TYPE_INT64,
+
+            TYPE_UINT8,
+            TYPE_UINT16,
+            TYPE_UINT32,
+            TYPE_UINT64,
+
+            TYPE_FLOAT,
+            TYPE_FLOAT2,
+            TYPE_FLOAT3,
+            TYPE_FLOAT4,
+
+            // TYPE_FLOAT4x4,
+            // TYPE_FLOAT3x2,
+
+            TYPE_COLOR,
+            TYPE_COLOR32,
+            TYPE_COLOR64,
+
+            TYPE_CHAR,
+            TYPE_CHAR16,
+            TYPE_CHAR32,
+
+            TYPE_DOUBLE
+    );
+
+
+    TokenSet BUILT_IN_REFERENCE_TYPES = TokenSet.create(
+            TYPE_DYNAMIC,
+            TYPE_OBJECT,
+            TYPE_STRING
+    );
+
+    TokenSet BUILT_IN_TYPES = TokenSet.orSet(TokenSet.orSet(BUILT_IN_PRIMITIVE_TYPES, BUILT_IN_REFERENCE_TYPES, TokenSet.create(TYPE_VOID)));
+
+    TokenSet BINARY_OPERATORS = TokenSet.create(
+            // '??
+            QUEST_QUEST,
+            // '&&' '||'
+            AND_AND, OR_OR,
+            // '==' '!='
+            EQ_EQ, NEQ,
+            // '<' '<=' '>' '>='
+            LT, LT_EQ, GT, GT_EQ,
+            // '&' '|' '^'
+            AND, OR, XOR,
+            // '<<' '>>' '>>>'
+            //  LT_LT, GT_GT, GT_GT_GT, -- todo
+            // '+' '-'
+            PLUS, MINUS,
+            // '*' '/' '%'
+            MUL, DIV, PERCENT
+    );
+
+    TokenSet LOGIC_OPERATORS = TokenSet.create(
+            OR_OR, AND_AND,
+            // Strictly speaking, this isn't a logical operator, but should be formatted the same.
+            QUEST_QUEST
+    );
+
+    TokenSet UNARY_OPERATORS = TokenSet.create(
+            // '-' '!' '~' '++' '--'
+            MINUS, NOT, BIN_NOT, PLUS_PLUS, MINUS_MINUS
+    );
+
 //    TokenSet BITWISE_OPERATORS = TokenSet.create(BITWISE_OPERATOR);
-//    TokenSet FUNCTION_DEFINITION = TokenSet.create(
+
+    //    TokenSet FUNCTION_DEFINITION = TokenSet.create(
 //            FUNCTION_FORMAL_PARAMETER,
 //            FUNCTION_DECLARATION_WITH_BODY,
 //            FUNCTION_DECLARATION_WITH_BODY_OR_NATIVE,
@@ -157,7 +182,19 @@ public interface AlchemyTokenSets {
 //            SETTER_DECLARATION
 //    );
 //
-    TokenSet COMMENTS = TokenSet.create(SINGLE_LINE_COMMENT,  MULTI_LINE_COMMENT);
+    TokenSet COMMENTS = TokenSet.create(SINGLE_LINE_COMMENT, MULTI_LINE_COMMENT);
+
+    TokenSet ASSIGNMENT_OPERATORS = TokenSet.create(
+            EQ,
+            PLUS_EQ,
+            MINUS_EQ,
+            MUL_EQ,
+            DIV_EQ,
+            MOD_EQ,
+            AND_EQ,
+            OR_EQ,
+            XOR_EQ
+    );
 
 //    TokenSet BLOCKS = TokenSet.create(
 //            BLOCK,
