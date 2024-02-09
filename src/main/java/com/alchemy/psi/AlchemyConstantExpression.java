@@ -3,11 +3,10 @@ package com.alchemy.psi;
 import com.intellij.lang.ASTNode;
 import org.jetbrains.annotations.NotNull;
 
-public class AlchemyBinaryOperator extends AlchemyPsiElement {
+public class AlchemyConstantExpression extends AlchemyPsiElement {
 
-    public AlchemyBinaryOperator(@NotNull ASTNode node) {
+    public AlchemyConstantExpression(@NotNull ASTNode node) {
         super(node);
     }
 
 }
-

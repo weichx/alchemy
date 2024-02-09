@@ -112,7 +112,7 @@ public interface AlchemyTokenTypes {
   IElementType EQ = new AlchemyTokenType("=");
   IElementType EQ_EQ = new AlchemyTokenType("==");
   IElementType EXPORT = new AlchemyTokenType("export");
-  IElementType EXPRESSION_BODY_DEF = new AlchemyTokenType("=>");
+  IElementType RIGHT_ARROW = new AlchemyTokenType("=>");
   IElementType EXTENDS = new AlchemyTokenType("extends");
   IElementType EXTENSION = new AlchemyTokenType("extension");
   IElementType EXTERNAL = new AlchemyTokenType("external");
@@ -195,6 +195,13 @@ public interface AlchemyTokenTypes {
   IElementType WITH = new AlchemyTokenType("with");
   IElementType XOR = new AlchemyTokenType("^");
   IElementType XOR_EQ = new AlchemyTokenType("^=");
+  IElementType REMEMBER = new AlchemyTokenType("remember");
+  IElementType USING = new AlchemyTokenType("using");
+  IElementType REF = new AlchemyTokenType("ref");
+  IElementType PARAMS = new AlchemyTokenType("params");
+  IElementType OUT = new AlchemyTokenType("out");
+  IElementType STACKALLOC = new AlchemyTokenType("stackalloc");
+  IElementType FOREACH = new AlchemyTokenType("foreach");
 
   IElementType TYPE_INT8 = new AlchemyTokenType("int8");
   IElementType TYPE_INT16 = new AlchemyTokenType("int16");

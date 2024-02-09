@@ -10,3 +10,4 @@ public class AlchemyPrimaryIdentifier extends AlchemyPsiElement {
     }
 
 }
+

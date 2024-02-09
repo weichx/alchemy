@@ -3,9 +3,9 @@ package com.alchemy.psi;
 import com.intellij.lang.ASTNode;
 import org.jetbrains.annotations.NotNull;
 
-public class AlchemyBitwiseOrExpression extends AlchemyPsiElement {
+public class AlchemyForLoop extends AlchemyPsiElement {
 
-    public AlchemyBitwiseOrExpression(@NotNull ASTNode node) {
+    public AlchemyForLoop(@NotNull ASTNode node) {
         super(node);
     }
 

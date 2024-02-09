@@ -156,6 +156,13 @@ HEX_COLOR=#([a-fA-F0-9]{6}|[a-fA-F0-9]{3}) // todo -- figure out what to do here
 <YYINITIAL, LONG_TEMPLATE_ENTRY> "var"                  { return VAR; }
 <YYINITIAL, LONG_TEMPLATE_ENTRY> "while"                { return WHILE; }
 <YYINITIAL, LONG_TEMPLATE_ENTRY> "with"                 { return WITH; }
+<YYINITIAL, LONG_TEMPLATE_ENTRY> "remember"             { return REMEMBER; }
+<YYINITIAL, LONG_TEMPLATE_ENTRY> "using"                { return USING; }
+<YYINITIAL, LONG_TEMPLATE_ENTRY> "ref"                  { return REF; }
+<YYINITIAL, LONG_TEMPLATE_ENTRY> "params"               { return PARAMS; }
+<YYINITIAL, LONG_TEMPLATE_ENTRY> "stackalloc"           { return STACKALLOC; }
+<YYINITIAL, LONG_TEMPLATE_ENTRY> "out"                  { return OUT; }
+<YYINITIAL, LONG_TEMPLATE_ENTRY> "foreach"              { return FOREACH; }
 
 
 // BUILT_IN_IDENTIFIER (can be used as normal identifiers)
@@ -228,7 +235,7 @@ HEX_COLOR=#([a-fA-F0-9]{6}|[a-fA-F0-9]{3}) // todo -- figure out what to do here
 <YYINITIAL, LONG_TEMPLATE_ENTRY> "%"                { return PERCENT; }
 <YYINITIAL, LONG_TEMPLATE_ENTRY> "~"                { return BIN_NOT; }
 <YYINITIAL, LONG_TEMPLATE_ENTRY> "!"                { return NOT; }
-<YYINITIAL, LONG_TEMPLATE_ENTRY> "=>"               { return EXPRESSION_BODY_DEF; }
+<YYINITIAL, LONG_TEMPLATE_ENTRY> "=>"               { return RIGHT_ARROW; }
 <YYINITIAL, LONG_TEMPLATE_ENTRY> "="                { return EQ; }
 <YYINITIAL, LONG_TEMPLATE_ENTRY> "=="               { return EQ_EQ; }
 <YYINITIAL, LONG_TEMPLATE_ENTRY> "!="               { return NEQ; }

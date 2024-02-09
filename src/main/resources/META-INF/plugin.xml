@@ -28,6 +28,9 @@
                   implementationClass="com.alchemy.AlchemyFileType"
                   fieldName="INSTANCE"
                   language="Alchemy" extensions="pot"/>
+
+        <lang.commenter language="Alchemy" implementationClass="com.alchemy.AlchemyCommenter"/>
+
         <lang.parserDefinition language="Alchemy" implementationClass="com.alchemy.AlchemyParserDefinition"/>
     </extensions>
 </idea-plugin>

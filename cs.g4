@@ -435,11 +435,11 @@ query_continuation
 //B.2.5 Statements
 statement
     : labeled_Statement
-    | declarationStatement
+    | declaration_statement
     | embedded_statement
     ;
 
-declarationStatement
+declaration_statement
     : local_variable_declaration ';'
     | local_constant_declaration ';'
     | local_function_declaration
